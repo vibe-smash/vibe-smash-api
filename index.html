@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Vibe Smash</title>
+  <style>
+    :root {
+      --bg-1: #0b0d17;
+      --bg-2: #17122d;
+      --glass: rgba(255, 255, 255, 0.07);
+      --glass-strong: rgba(255, 255, 255, 0.14);
+      --border: rgba(255, 255, 255, 0.16);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #ff4d8d;
+      --accent-2: #7c5cff;
+      --shadow: 0 14px 36px rgba(0, 0, 0, 0.48);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 12%, rgba(255, 77, 141, 0.22), transparent 42%),
+        radial-gradient(circle at 85% 18%, rgba(124, 92, 255, 0.24), transparent 45%),
+        linear-gradient(160deg, var(--bg-1), var(--bg-2));
+      padding-bottom: 56px;
+    }
+
+    .app {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 12px;
+    }
+
+    .top-bar {
+      background: var(--glass);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow);
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .top-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .brand small {
+      color: var(--muted);
+      font-size: 0.74rem;
+    }
+
+    .lang-box {
+      display: flex;
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.28);
+      padding: 3px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .lang-btn {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.74rem;
+      padding: 5px 9px;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+
+    .lang-btn.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7px;
+    }
+
+    @media (min-width: 700px) {
+      .tabs {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .tab-btn {
+      padding: 9px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-color: transparent;
+    }
+
+    .hand-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: linear-gradient(90deg, rgba(255, 77, 141, 0.24), rgba(124, 92, 255, 0.26));
+      border: 1px solid rgba(255, 77, 141, 0.5);
+      border-radius: 16px;
+      padding: 10px 13px;
+      margin-bottom: 12px;
+      animation: glowPulse 1.4s infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      from { transform: translateY(0); }
+      to { transform: translateY(-2px); }
+    }
+
+    .hand-pointer {
+      font-size: 1.25rem;
+      display: inline-block;
+      animation: pointMove 0.8s infinite alternate;
+    }
+
+    @keyframes pointMove {
+      from { transform: translateX(0); }
+      to { transform: translateX(5px); }
+    }
+
+    .panel {
+      background: var(--glass);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow);
+      margin-bottom: 12px;
+    }
+
+    .panel-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 1.04rem;
+      font-weight: 700;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: var(--glass-strong);
+      color: var(--text);
+      border-radius: 11px;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-color: transparent;
+    }
+
+    .btn-sm {
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      border-radius: 9px;
+    }
+
+    .score-pill {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(124, 92, 255, 0.25);
+      font-weight: 700;
+    }
+
+    .add-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .btn-add-main {
+      flex: 1;
+      padding: 12px 14px;
+      border-radius: 13px;
+      border: none;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .slot-card {
+      background: rgba(0, 0, 0, 0.34);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 11px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .slot-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .slot-preview-box {
+      width: 100%;
+      max-height: 220px;
+      aspect-ratio: 4 / 3;
+      border-radius: 13px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px dashed rgba(255, 255, 255, 0.25);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+
+    .slot-preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .slot-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .battle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      align-items: start;
+      transition: opacity 0.18s ease;
+    }
+
+    @media (min-width: 720px) {
+      .battle-grid {
+        gap: 14px;
+      }
+    }
+
+    .battle-grid.fading {
+      opacity: 0.4;
+    }
+
+    .person-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    @media (min-width: 720px) {
+      .person-card {
+        padding: 12px;
+        gap: 9px;
+      }
+    }
+
+    .pic-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.35);
+      cursor: pointer;
+    }
+
+    .pic-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .vote-badge {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      background: rgba(11, 13, 23, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .card-name {
+      margin: 0;
+      font-size: 0.88rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .tag-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 3px 6px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      cursor: pointer;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 10px;
+      padding: 9px 11px;
+      color: var(--text);
+      font-size: 0.86rem;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+    }
+
+    .mini-form {
+      display: flex;
+      gap: 4px;
+    }
+
+    .mini-comments {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-height: 68px;
+      overflow-y: auto;
+    }
+
+    .cmt-line {
+      font-size: 0.7rem;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 4px 7px;
+      border-radius: 8px;
+      color: var(--muted);
+    }
+
+    .simple-smash-stage {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .stage-slot {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 8px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stage-media-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.32);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+
+    .stage-media-box img,
+    .stage-media-box video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .plus-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px;
+      color: var(--text);
+    }
+
+    .plus-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .vs-circle {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.75rem;
+      padding: 6px 8px;
+      border-radius: 999px;
+    }
+
+    .preset-strip {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .preset-chip {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 0.72rem;
+      cursor: pointer;
+    }
+
+    .feed-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .feed-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .feed-pair {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      align-items: center;
+      text-align: center;
+    }
+
+    .feed-pair img,
+    .feed-pair video {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      max-height: 130px;
+      object-fit: cover;
+      border-radius: 11px;
+      display: block;
+    }
+
+    .leader-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 720px) {
+      .leader-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .rank-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .rank-row {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .rank-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .rank-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      z-index: 300;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="top-bar">
+      <div class="top-head">
+        <div class="brand">
+          <div class="logo">⚡</div>
+          <div>
+            <h1>Vibe Smash</h1>
+            <small id="lbl-sub">Add up to 10 photos • Vote • Create Smash</small>
+          </div>
+        </div>
+        <div class="lang-box">
+          <button class="lang-btn active" id="lang-en" onclick="window.setLang('en')">EN</button>
+          <button class="lang-btn" id="lang-ta" onclick="window.setLang('ta')">தமிழ்</button>
+        </div>
+      </div>
+
+      <nav class="tabs">
+        <button class="tab-btn active" id="tab-boys" onclick="window.goTab('boys')">⚡ Boys Smash</button>
+        <button class="tab-btn" id="tab-create" onclick="window.goTab('create')">🎨 Create Smash</button>
+        <button class="tab-btn" id="tab-leader" onclick="window.goTab('leader')">🏆 Leaderboard</button>
+        <button class="tab-btn" id="tab-girls" onclick="window.goTab('girls')">💖 Girls Smash</button>
+      </nav>
+    </header>
+
+    <div id="vote-hand-banner" class="hand-banner hidden">
+      <div style="display:flex; align-items:center; gap:8px; font-size:0.82rem; font-weight:700;">
+        <span class="hand-pointer">👉</span>
+        <span id="lbl-hand-text">Create Smash</span>
+      </div>
+      <div style="display:flex; gap:6px;">
+        <button class="btn btn-primary btn-sm" onclick="window.openCreateForUnvoted()">Create Smash →</button>
+        <button class="btn btn-sm" onclick="window.hideHandBanner()">✕</button>
+      </div>
+    </div>
+
+    <!-- BOYS SMASH -->
+    <section id="view-boys">
+      <div class="panel">
+        <div class="panel-top">
+          <h2 class="panel-title" id="title-boys">Boys Smash</h2>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <span class="score-pill" id="boys-count-pill">0 / 10</span>
+            <button class="btn btn-sm" onclick="window.nextPair('boys')" id="btn-next-boys">Next</button>
+          </div>
+        </div>
+
+        <div class="add-bar">
+          <button type="button" class="btn-add-main" id="btn-add-boys" onclick="window.addNewSlot('boys')">
+            📷 Add Photo (Up to 10)
+          </button>
+        </div>
+
+        <input type="file" id="slot-file-picker" class="hidden" accept="image/*" />
+        <div id="boys-slots"></div>
+        <div id="boys-battle" class="battle-grid"></div>
+      </div>
+    </section>
+
+    <!-- CREATE SMASH -->
+    <section id="view-create" class="hidden">
+      <div class="panel">
+        <div class="panel-top">
+          <h2 class="panel-title" id="title-create">Create Smash</h2>
+          <button class="btn btn-sm" onclick="window.cycleSubjectPhoto()" id="btn-switch-person">Switch Photo</button>
+        </div>
+
+        <div class="simple-smash-stage">
+          <div class="stage-slot">
+            <div class="stage-media-box" onclick="window.cycleSubjectPhoto()">
+              <img id="stage-person-img" src="" alt="Person" />
+            </div>
+            <strong style="font-size:0.8rem;" id="stage-person-name">Player</strong>
+          </div>
+
+          <div class="vs-circle">VS</div>
+
+          <div class="stage-slot">
+            <div class="stage-media-box" onclick="window.triggerComparePicker()">
+              <div id="stage-plus-ui" class="plus-placeholder">
+                <div class="plus-circle">+</div>
+                <span style="font-size:0.72rem; font-weight:700;" id="lbl-add-poster">Add Poster / Animal / GFX</span>
+              </div>
+              <img id="stage-compare-img" class="hidden" src="" alt="Media" />
+              <video id="stage-compare-video" class="hidden" autoplay loop muted playsinline></video>
+            </div>
+            <strong style="font-size:0.8rem;" id="stage-compare-label">Tap +</strong>
+          </div>
+        </div>
+
+        <input type="file" id="stage-compare-file" class="hidden" accept="image/*,image/gif,video/mp4,video/webm,video/quicktime" />
+
+        <div class="preset-strip">
+          <button class="preset-chip" onclick="window.pickPreset('🦁 Lion')">🦁 Lion</button>
+          <button class="preset-chip" onclick="window.pickPreset('🦚 Peacock')">🦚 Peacock</button>
+          <button class="preset-chip" onclick="window.pickPreset('🐼 Panda')">🐼 Panda</button>
+          <button class="preset-chip" onclick="window.pickPreset('😂 Roast')">😂 Roast</button>
+        </div>
+
+        <div class="mini-form" style="margin-bottom:8px;">
+          <input type="text" id="stage-comment-input" placeholder="Write a short comment..." />
+          <button class="btn btn-primary" onclick="window.postSimpleSmash()" id="btn-publish-smash">Post</button>
+        </div>
+
+        <div id="smash-feed-list" class="feed-stack"></div>
+      </div>
+    </section>
+
+    <!-- LEADERBOARD -->
+    <section id="view-leader" class="hidden">
+      <div class="panel">
+        <div class="panel-top">
+          <h2 class="panel-title" id="title-leader">Leaderboard</h2>
+        </div>
+        <div class="leader-grid">
+          <div>
+            <h3 style="margin:0 0 8px 0; font-size:0.9rem;" id="lbl-top-rank">🏆 Top Rank</h3>
+            <div id="top-rank-list" class="rank-list"></div>
+          </div>
+          <div>
+            <h3 style="margin:0 0 8px 0; font-size:0.9rem;" id="lbl-roast-rank">🔥 Most Roasted</h3>
+            <div id="roast-rank-list" class="rank-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GIRLS SMASH -->
+    <section id="view-girls" class="hidden">
+      <div class="panel">
+        <div class="panel-top">
+          <h2 class="panel-title" id="title-girls">Girls Smash</h2>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <span class="score-pill" id="girls-count-pill">0 / 10</span>
+            <button class="btn btn-sm" onclick="window.nextPair('girls')" id="btn-next-girls">Next</button>
+          </div>
+        </div>
+
+        <div class="add-bar">
+          <button type="button" class="btn-add-main" id="btn-add-girls" onclick="window.addNewSlot('girls')">
+            📷 Add Photo (Up to 10)
+          </button>
+        </div>
+
+        <div id="girls-slots"></div>
+        <div id="girls-battle" class="battle-grid"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    /** @typedef {"en" | "ta"} Lang */
+    /** @typedef {"boys" | "girls"} Pool */
+    /** @typedef {{ user: string, text: string }} AutoComment */
+    /** @typedef {{ slotId: string, pool: Pool, photo: string, name: string }} SlotDraft */
+    /** @typedef {{ id: string, name: string, photo: string, elo: number, tags: Record<string, number>, comments: AutoComment[], pool: Pool }} ProfileItem */
+    /** @typedef {{ id: string, autoUser: string, personName: string, personPhoto: string, mediaLabel: string, mediaUrl: string, mediaType: "image" | "video" | "none", comment: string, replies: AutoComment[] }} SmashPostItem */
+
+    const MAX_PHOTOS = 10;
+    const STORAGE_KEY = "vibe_smash_simple_v7";
+    const TAGS = ["🦁 Lion", "🦚 Peacock", "🐼 Panda", "😂 Roast"];
+    const AUTO_PREFIXES = ["GhostVibe", "NightOwl", "RoastStar", "PixelFox", "ChillWave", "SparkGuy", "VibeAce", "ShadowMirth"];
+
+    /** @type {Record<Lang, Record<string, string>>} */
+    const TEXTS = {
+      en: {
+        sub: "Add up to 10 photos • Vote • Create Smash",
+        tabBoys: "⚡ Boys Smash",
+        tabCreate: "🎨 Create Smash",
+        tabLeader: "🏆 Leaderboard",
+        tabGirls: "💖 Girls Smash",
+        handText: "Create Smash",
+        titleBoys: "Boys Smash",
+        titleGirls: "Girls Smash",
+        titleCreate: "Create Smash",
+        titleLeader: "Leaderboard",
+        addPhotoBig: "📷 Add Photo (Up to 10)",
+        pickPhoto: "📷 Pick Photo",
+        next: "Next",
+        save: "Save",
+        remove: "✕",
+        namePh: "Enter name...",
+        commentPh: "Write a short comment...",
+        shortCommentPh: "Comment...",
+        post: "Post",
+        vote: "Vote",
+        addPoster: "Add Poster / Animal / GFX",
+        switchPhoto: "Switch Photo",
+        topRank: "🏆 Top Rank",
+        roastRank: "🔥 Most Roasted",
+        needTwo: "Add at least 2 photos with names to start voting (max 10)."
+      },
+      ta: {
+        sub: "10 போட்டோ வரை சேர் • ஓட்டு போடு • கிரியேட் ஸ்மாஷ்",
+        tabBoys: "⚡ பாய்ஸ் ஸ்மாஷ்",
+        tabCreate: "🎨 கிரியேட் ஸ்மாஷ்",
+        tabLeader: "🏆 லீடர்போர்டு",
+        tabGirls: "💖 கேர்ள்ஸ் ஸ்மாஷ்",
+        handText: "கிரியேட் ஸ்மாஷ்",
+        titleBoys: "பாய்ஸ் ஸ்மாஷ்",
+        titleGirls: "கேர்ள்ஸ் ஸ்மாஷ்",
+        titleCreate: "கிரியேட் ஸ்மாஷ்",
+        titleLeader: "லீடர்போர்டு",
+        addPhotoBig: "📷 Add Photo (10 வரை)",
+        pickPhoto: "📷 போட்டோ எடு",
+        next: "அடுத்து",
+        save: "சேமி",
+        remove: "✕",
+        namePh: "பெயர் எழுது...",
+        commentPh: "சின்ன கமெண்ட் எழுது...",
+        shortCommentPh: "கமெண்ட்...",
+        post: "போஸ்ட்",
+        vote: "ஓட்டு",
+        addPoster: "போஸ்டர் / அனிமல் / GFX",
+        switchPhoto: "போட்டோ மாற்று",
+        topRank: "🏆 டாப் ரேங்க்",
+        roastRank: "🔥 மோஸ்ட் ரோஸ்ட்",
+        needTwo: "ஓட்டிங் தொடங்க குறைந்தது 2 போட்டோ + பெயர் சேர்க்கவும் (10 வரை)."
+      }
+    };
+
+    /**
+     * @param {string} label
+     * @param {string} c1
+     * @param {string} c2
+     * @returns {string}
+     */
+    function makeBadgeImage(label, c1, c2) {
+      const clean = String(label || "SMASH").slice(0, 12).replace(/[<>&"]/g, "");
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" viewBox="0 0 420 420">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></linearGradient></defs>
+        <rect width="420" height="420" fill="url(#g)"/>
+        <circle cx="210" cy="185" r="72" fill="rgba(255,255,255,0.16)"/>
+        <text x="210" y="202" font-size="36" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-weight="800">${clean}</text>
+        <text x="210" y="295" font-size="18" text-anchor="middle" fill="rgba(255,255,255,0.86)" font-family="system-ui,sans-serif" font-weight="700">VIBE SMASH</text>
+      </svg>`;
+      return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+    }
+
+    /** @type {Record<string, string>} */
+    const PRESET_IMAGES = {
+      "🦁 Lion": makeBadgeImage("LION", "#ff4d8d", "#4c1d95"),
+      "🦚 Peacock": makeBadgeImage("PEACOCK", "#0ea5e9", "#1e1b4b"),
+      "🐼 Panda": makeBadgeImage("PANDA", "#10b981", "#134e4a"),
+      "😂 Roast": makeBadgeImage("ROAST", "#f97316", "#7c2d12")
+    };
+
+    /** @returns {string} */
+    function generateAutoUsername() {
+      const prefix = AUTO_PREFIXES[Math.floor(Math.random() * AUTO_PREFIXES.length)];
+      const num = Math.floor(10 + Math.random() * 89);
+      return `${prefix}_${num}`;
+    }
+
+    /** @param {unknown} v */
+    function esc(v) {
+      return String(v || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    /** @param {Lang} lang @param {string} key */
+    function tr(lang, key) {
+      return (TEXTS[lang] && TEXTS[lang][key]) || TEXTS.en[key] || "";
+    }
+
+    let state = {
+      lang: /** @type {Lang} */ ("en"),
+      boys: /** @type {ProfileItem[]} */ ([]),
+      girls: /** @type {ProfileItem[]} */ ([]),
+      posts: /** @type {SmashPostItem[]} */ ([]),
+      pair: /** @type {Record<Pool, string[]>} */ ({ boys: [], girls: [] }),
+      seen: /** @type {Record<Pool, string[]>} */ ({ boys: [], girls: [] }),
+      unvotedId: /** @type {string | null} */ (null),
+      votedId: /** @type {string | null} */ (null),
+      showHand: false
+    };
+
+    /** @type {Record<Pool, SlotDraft[]>} */
+    const slotsByPool = { boys: [], girls: [] };
+    /** @type {SlotDraft | null} */
+    let activePickingSlot = null;
+    /** @type {"boys" | "create" | "leader" | "girls"} */
+    let activeTab = "boys";
+    let voteLock = false;
+    /** @type {number | undefined} */
+    let toastTimeout;
+    /** @type {string | null} */
+    let blobUrlInUse = null;
+
+    let stageMedia = {
+      label: "",
+      url: "",
+      type: /** @type {"image" | "video" | "none"} */ ("none")
+    };
+    let stagePersonIndex = 0;
+
+    function loadSaved() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") {
+          state = {
+            ...state,
+            ...parsed,
+            lang: parsed.lang === "ta" ? "ta" : "en",
+            boys: Array.isArray(parsed.boys) ? parsed.boys.slice(0, MAX_PHOTOS) : [],
+            girls: Array.isArray(parsed.girls) ? parsed.girls.slice(0, MAX_PHOTOS) : [],
+            posts: Array.isArray(parsed.posts) ? parsed.posts.slice(0, 20) : []
+          };
+        }
+      } catch (_e) {
+        // ignore storage parse issue
+      }
+    }
+
+    function saveState() {
+      try {
+        const safePosts = state.posts.map((p) => ({
+          ...p,
+          mediaUrl: p.mediaUrl && p.mediaUrl.startsWith("blob:") ? "" : p.mediaUrl,
+          mediaType: p.mediaUrl && p.mediaUrl.startsWith("blob:") ? "none" : p.mediaType
+        }));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...state, posts: safePosts }));
+      } catch (_e) {
+        showToast("Storage full");
+      }
+    }
+
+    /** @param {string} msg */
+    function showToast(msg) {
+      const el = document.getElementById("toast");
+      if (!el) return;
+      el.textContent = msg;
+      el.classList.add("show");
+      window.clearTimeout(toastTimeout);
+      toastTimeout = window.setTimeout(() => el.classList.remove("show"), 1800);
+    }
+
+    /** @param {File} file @returns {Promise<string>} */
+    function readFileAsDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => resolve(String((ev.target && ev.target.result) || ""));
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    /** @param {string} dataUrl @param {number} [maxSize] @returns {Promise<string>} */
+    function compressDataUrl(dataUrl, maxSize = 480) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          try {
+            let w = img.width || maxSize;
+            let h = img.height || maxSize;
+            if (w > h && w > maxSize) {
+              h = Math.round((h * maxSize) / w);
+              w = maxSize;
+            } else if (h >= w && h > maxSize) {
+              w = Math.round((w * maxSize) / h);
+              h = maxSize;
+            }
+            const canvas = document.createElement("canvas");
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return resolve(dataUrl);
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL("image/jpeg", 0.72));
+          } catch (_e) {
+            resolve(dataUrl);
+          }
+        };
+        img.onerror = () => resolve(dataUrl);
+        img.src = dataUrl;
+      });
+    }
+
+    /** @param {File} file @returns {Promise<string>} */
+    async function processPhotoFile(file) {
+      try {
+        const rawUrl = await readFileAsDataUrl(file);
+        if (!rawUrl || !rawUrl.startsWith("data:")) {
+          return URL.createObjectURL(file);
+        }
+        return await compressDataUrl(rawUrl, 480);
+      } catch (_e) {
+        return URL.createObjectURL(file);
+      }
+    }
+
+    /** @param {File} file @returns {Promise<string>} */
+    function readMediaUrl(file) {
+      return new Promise((resolve, reject) => {
+        if (blobUrlInUse && blobUrlInUse.startsWith("blob:")) {
+          URL.revokeObjectURL(blobUrlInUse);
+          blobUrlInUse = null;
+        }
+        if (file.size > 3.5 * 1024 * 1024) {
+          const u = URL.createObjectURL(file);
+          blobUrlInUse = u;
+          resolve(u);
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (ev) => resolve(String((ev.target && ev.target.result) || ""));
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function applyTexts() {
+      const l = state.lang;
+      /** @param {string} id @param {string} val */
+      const setT = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
+      /** @param {string} id @param {string} ph */
+      const setP = (id, ph) => {
+        const el = /** @type {HTMLInputElement | null} */ (document.getElementById(id));
+        if (el) el.placeholder = ph;
+      };
+
+      setT("lbl-sub", tr(l, "sub"));
+      setT("tab-boys", tr(l, "tabBoys"));
+      setT("tab-create", tr(l, "tabCreate"));
+      setT("tab-leader", tr(l, "tabLeader"));
+      setT("tab-girls", tr(l, "tabGirls"));
+      setT("lbl-hand-text", tr(l, "handText"));
+      setT("title-boys", tr(l, "titleBoys"));
+      setT("title-girls", tr(l, "titleGirls"));
+      setT("title-create", tr(l, "titleCreate"));
+      setT("title-leader", tr(l, "titleLeader"));
+      setT("btn-add-boys", tr(l, "addPhotoBig"));
+      setT("btn-add-girls", tr(l, "addPhotoBig"));
+      setT("btn-next-boys", tr(l, "next"));
+      setT("btn-next-girls", tr(l, "next"));
+      setT("lbl-add-poster", tr(l, "addPoster"));
+      setT("btn-switch-person", tr(l, "switchPhoto"));
+      setT("btn-publish-smash", tr(l, "post"));
+      setT("lbl-top-rank", tr(l, "topRank"));
+      setT("lbl-roast-rank", tr(l, "roastRank"));
+
+      setP("stage-comment-input", tr(l, "commentPh"));
+    }
+
+    /** @param {Lang} lang */
+    function setLang(lang) {
+      state.lang = lang === "ta" ? "ta" : "en";
+      document.getElementById("lang-en")?.classList.toggle("active", state.lang === "en");
+      document.getElementById("lang-ta")?.classList.toggle("active", state.lang === "ta");
+      applyTexts();
+      saveState();
+      if (activeTab === "boys" || activeTab === "girls") renderPool(activeTab);
+      if (activeTab === "create") renderCreateStage();
+      if (activeTab === "leader") renderLeader();
+    }
+
+    /** @param {"boys" | "create" | "leader" | "girls"} tab */
+    function goTab(tab) {
+      activeTab = tab;
+      ["boys", "create", "leader", "girls"].forEach((tKey) => {
+        document.getElementById(`view-${tKey}`)?.classList.toggle("hidden", tKey !== tab);
+        document.getElementById(`tab-${tKey}`)?.classList.toggle("active", tKey === tab);
+      });
+      if (tab === "boys" || tab === "girls") renderPool(tab);
+      if (tab === "create") renderCreateStage();
+      if (tab === "leader") renderLeader();
+    }
+
+    function updateHandBanner() {
+      const b = document.getElementById("vote-hand-banner");
+      if (b) b.classList.toggle("hidden", !state.showHand);
+    }
+
+    function hideHandBanner() {
+      state.showHand = false;
+      saveState();
+      updateHandBanner();
+    }
+
+    function openCreateForUnvoted() {
+      state.showHand = false;
+      stagePersonIndex = 0;
+      saveState();
+      updateHandBanner();
+      goTab("create");
+    }
+
+    /** @param {Pool} pool */
+    function addNewSlot(pool) {
+      const total = state[pool].length + slotsByPool[pool].length;
+      if (total >= MAX_PHOTOS) {
+        showToast("Max 10 photos");
+        return;
+      }
+      /** @type {SlotDraft} */
+      const newSlot = {
+        slotId: `sl_${Date.now()}_${Math.floor(Math.random() * 9999)}`,
+        pool,
+        photo: "",
+        name: ""
+      };
+      slotsByPool[pool].push(newSlot);
+      renderSlots(pool);
+      updateCountPill(pool);
+      activePickingSlot = newSlot;
+      const picker = /** @type {HTMLInputElement | null} */ (document.getElementById("slot-file-picker"));
+      if (picker) {
+        picker.value = "";
+        picker.click();
+      }
+    }
+
+    /** @param {Pool} pool @param {string} slotId */
+    function pickPhotoForSlot(pool, slotId) {
+      const found = slotsByPool[pool].find((s) => s.slotId === slotId);
+      if (!found) return;
+      activePickingSlot = found;
+      const picker = /** @type {HTMLInputElement | null} */ (document.getElementById("slot-file-picker"));
+      if (picker) {
+        picker.value = "";
+        picker.click();
+      }
+    }
+
+    /** @param {HTMLInputElement | null} picker */
+    async function onSlotFileChosen(picker) {
+      const file = picker && picker.files ? picker.files[0] : undefined;
+      const target = activePickingSlot;
+      if (!file || !target) return;
+
+      const tempObjUrl = URL.createObjectURL(file);
+      target.photo = tempObjUrl;
+      renderSlots(target.pool);
+
+      const imgEl = /** @type {HTMLImageElement | null} */ (document.getElementById(`slot-img-${target.slotId}`));
+      if (imgEl) imgEl.src = tempObjUrl;
+
+      const processed = await processPhotoFile(file);
+      if (target.photo === tempObjUrl && processed) {
+        target.photo = processed;
+        const latestImg = /** @type {HTMLImageElement | null} */ (document.getElementById(`slot-img-${target.slotId}`));
+        if (latestImg) latestImg.src = processed;
+        URL.revokeObjectURL(tempObjUrl);
+      }
+      activePickingSlot = null;
+      if (picker) picker.value = "";
+    }
+
+    /** @param {Pool} pool @param {string} slotId @param {string} val */
+    function onSlotNameInput(pool, slotId, val) {
+      const item = slotsByPool[pool].find((s) => s.slotId === slotId);
+      if (item) item.name = val;
+    }
+
+    /** @param {Pool} pool @param {string} slotId */
+    function removeSlot(pool, slotId) {
+      const idx = slotsByPool[pool].findIndex((s) => s.slotId === slotId);
+      if (idx === -1) return;
+      slotsByPool[pool].splice(idx, 1);
+      renderSlots(pool);
+      updateCountPill(pool);
+    }
+
+    /** @param {Pool} pool @param {string} slotId */
+    function saveSlot(pool, slotId) {
+      if (state[pool].length >= MAX_PHOTOS) {
+        showToast("Max 10 photos");
+        return;
+      }
+      const idx = slotsByPool[pool].findIndex((s) => s.slotId === slotId);
+      if (idx === -1) return;
+      const s = slotsByPool[pool][idx];
+      const inpEl = /** @type {HTMLInputElement | null} */ (document.getElementById(`slot-name-${slotId}`));
+      const typedName = inpEl ? inpEl.value.trim() : s.name.trim();
+      const finalName = typedName || `Person ${state[pool].length + 1}`;
+      const finalPhoto = s.photo || makeBadgeImage(finalName, "#ff4d8d", "#4c1d95");
+
+      state[pool].push({
+        id: `${pool[0]}_${Date.now()}_${Math.floor(Math.random() * 9999)}`,
+        name: finalName,
+        photo: finalPhoto,
+        elo: 1200,
+        tags: {},
+        comments: [],
+        pool
+      });
+
+      slotsByPool[pool].splice(idx, 1);
+      saveState();
+      renderPool(pool);
+      showToast(`Saved: ${finalName}`);
+    }
+
+    /** @param {Pool} pool */
+    function renderSlots(pool) {
+      const container = document.getElementById(`${pool}-slots`);
+      if (!container) return;
+      const list = slotsByPool[pool];
+      if (!list.length) {
+        container.innerHTML = "";
+        return;
+      }
+
+      container.innerHTML = list
+        .map((s, idx) => {
+          const previewSrc = s.photo || makeBadgeImage(`#${idx + 1}`, "#7c5cff", "#1e1b4b");
+          return `
+            <div class="slot-card" id="slot-card-${s.slotId}">
+              <div class="slot-head">
+                <span style="font-size:0.78rem; font-weight:700; color:var(--muted);">#${idx + 1}</span>
+                <div style="display:flex; gap:6px;">
+                  <button type="button" class="btn btn-sm" onclick="window.pickPhotoForSlot('${pool}', '${s.slotId}')">${esc(tr(state.lang, "pickPhoto"))}</button>
+                  <button type="button" class="btn btn-sm" onclick="window.removeSlot('${pool}', '${s.slotId}')">${esc(tr(state.lang, "remove"))}</button>
+                </div>
+              </div>
+              <div class="slot-preview-box" onclick="window.pickPhotoForSlot('${pool}', '${s.slotId}')">
+                <img id="slot-img-${s.slotId}" src="${esc(previewSrc)}" alt="" />
+              </div>
+              <div class="slot-actions">
+                <input type="text" id="slot-name-${s.slotId}" value="${esc(s.name)}" placeholder="${esc(tr(state.lang, "namePh"))}" oninput="window.onSlotNameInput('${pool}', '${s.slotId}', this.value)" />
+                <button type="button" class="btn btn-primary btn-sm" onclick="window.saveSlot('${pool}', '${s.slotId}')">${esc(tr(state.lang, "save"))}</button>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    /** @param {Pool} pool */
+    function updateCountPill(pool) {
+      const pill = document.getElementById(`${pool}-count-pill`);
+      if (pill) {
+        pill.textContent = `${state[pool].length} / ${MAX_PHOTOS}`;
+      }
+    }
+
+    /** @param {Pool} pool @param {string[]} [skipIds] */
+    function ensurePair(pool, skipIds = []) {
+      const list = state[pool];
+      if (list.length < 2) return [];
+
+      /** @type {string[][]} */
+      const pairs = [];
+      for (let i = 0; i < list.length; i++) {
+        for (let j = i + 1; j < list.length; j++) {
+          const a = list[i].id;
+          const b = list[j].id;
+          const used = state.seen[pool].includes(`${a}-${b}`) || state.seen[pool].includes(`${b}-${a}`);
+          const blocked = skipIds.includes(a) || skipIds.includes(b);
+          if (!used && !blocked) pairs.push([a, b]);
+        }
+      }
+
+      let pick;
+      if (pairs.length > 0) {
+        pick = pairs[Math.floor(Math.random() * pairs.length)];
+      } else {
+        state.seen[pool] = [];
+        const shuf = [...list].sort(() => Math.random() - 0.5);
+        pick = [shuf[0].id, shuf[1].id];
+      }
+      if (Math.random() < 0.5) pick = [pick[1], pick[0]];
+      state.seen[pool].push(`${pick[0]}-${pick[1]}`);
+      if (state.seen[pool].length > Math.max(3, list.length)) state.seen[pool].shift();
+      state.pair[pool] = pick;
+      return pick;
+    }
+
+    /** @param {Pool} pool */
+    function nextPair(pool) {
+      if (state[pool].length < 2) {
+        showToast(tr(state.lang, "needTwo"));
+        return;
+      }
+      const grid = document.getElementById(`${pool}-battle`);
+      grid?.classList.add("fading");
+      window.setTimeout(() => {
+        ensurePair(pool, state.pair[pool]);
+        saveState();
+        renderPool(pool);
+        grid?.classList.remove("fading");
+      }, 140);
+    }
+
+    /** @param {Pool} pool @param {string} winnerId */
+    function voteCard(pool, winnerId) {
+      if (voteLock) return;
+      voteLock = true;
+      window.setTimeout(() => {
+        voteLock = false;
+      }, 250);
+
+      const [a, b] = state.pair[pool] || [];
+      const loserId = a === winnerId ? b : a;
+      const winObj = state[pool].find((p) => p.id === winnerId);
+      const loseObj = state[pool].find((p) => p.id === loserId);
+
+      if (winObj && loseObj) {
+        const exp = 1 / (1 + Math.pow(10, (loseObj.elo - winObj.elo) / 400));
+        const pts = Math.max(4, Math.round(24 * (1 - exp)));
+        winObj.elo += pts;
+        loseObj.elo -= pts;
+      }
+
+      state.votedId = winnerId;
+      state.unvotedId = loserId || null;
+      stagePersonIndex = 0;
+      state.showHand = true;
+
+      const grid = document.getElementById(`${pool}-battle`);
+      grid?.classList.add("fading");
+      window.setTimeout(() => {
+        ensurePair(pool, [winnerId]);
+        saveState();
+        renderPool(pool);
+        updateHandBanner();
+        grid?.classList.remove("fading");
+      }, 150);
+    }
+
+    /** @param {Pool} pool @param {string} id @param {string} tag */
+    function addTag(pool, id, tag) {
+      const p = state[pool].find((x) => x.id === id);
+      if (!p) return;
+      p.tags[tag] = (p.tags[tag] || 0) + 1;
+      saveState();
+      renderPool(pool);
+      if (activeTab === "leader") renderLeader();
+    }
+
+    /** @param {Pool} pool @param {string} id @param {Event} ev */
+    function addCardComment(pool, id, ev) {
+      ev.preventDefault();
+      const inp = /** @type {HTMLInputElement | null} */ (document.getElementById(`c-${pool}-${id}`));
+      const val = inp ? inp.value.trim() : "";
+      if (!val) return;
+      const p = state[pool].find((x) => x.id === id);
+      if (!p) return;
+      p.comments.unshift({ user: generateAutoUsername(), text: val });
+      if (inp) inp.value = "";
+      saveState();
+      renderPool(pool);
+      if (activeTab === "leader") renderLeader();
+    }
+
+    /** @param {Pool} pool @param {ProfileItem} person */
+    function cardMarkup(pool, person) {
+      const tagsHtml = TAGS.map((tg) => {
+        const n = person.tags[tg] || 0;
+        return `<button class="tag-btn" onclick="event.stopPropagation(); window.addTag('${pool}', '${person.id}', '${esc(tg)}')">${esc(tg)}${n ? ` ${n}` : ""}</button>`;
+      }).join("");
+
+      const cmtsHtml = (person.comments || [])
+        .slice(0, 2)
+        .map((c) => `<div class="cmt-line"><strong>${esc(c.user)}:</strong> ${esc(c.text)}</div>`)
+        .join("");
+
+      return `
+        <article class="person-card">
+          <div class="pic-box" onclick="window.voteCard('${pool}', '${person.id}')">
+            <img src="${esc(person.photo)}" alt="${esc(person.name)}" />
+            <span class="vote-badge">${esc(tr(state.lang, "vote"))}</span>
+          </div>
+          <div class="card-title-row">
+            <h3 class="card-name">${esc(person.name)}</h3>
+            <span class="score-pill">${person.elo}</span>
+          </div>
+          <div class="tag-row">${tagsHtml}</div>
+          <form class="mini-form" onsubmit="window.addCardComment('${pool}', '${person.id}', event)">
+            <input type="text" id="c-${pool}-${person.id}" placeholder="${esc(tr(state.lang, "shortCommentPh"))}" />
+            <button type="submit" class="btn btn-primary btn-sm">${esc(tr(state.lang, "post"))}</button>
+          </form>
+          ${cmtsHtml ? `<div class="mini-comments">${cmtsHtml}</div>` : ""}
+        </article>
+      `;
+    }
+
+    /** @param {Pool} pool */
+    function renderPool(pool) {
+      updateCountPill(pool);
+      renderSlots(pool);
+
+      const grid = document.getElementById(`${pool}-battle`);
+      if (!grid) return;
+      if (state[pool].length < 2) {
+        grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--muted); font-size:0.84rem;">${esc(tr(state.lang, "needTwo"))}</p>`;
+        return;
+      }
+
+      const validIds = new Set(state[pool].map((p) => p.id));
+      let [a, b] = state.pair[pool] || [];
+      if (!validIds.has(a) || !validIds.has(b) || a === b) {
+        [a, b] = ensurePair(pool);
+      }
+      const pA = state[pool].find((p) => p.id === a);
+      const pB = state[pool].find((p) => p.id === b);
+      grid.innerHTML = pA && pB ? cardMarkup(pool, pA) + cardMarkup(pool, pB) : "";
+    }
+
+    /** @returns {ProfileItem[]} */
+    function allProfiles() {
+      return [...state.boys, ...state.girls];
+    }
+
+    /** @returns {ProfileItem} */
+    function currentStagePerson() {
+      const list = allProfiles();
+      if (!list.length) {
+        return {
+          id: "default",
+          name: "Player",
+          photo: makeBadgeImage("PLAYER", "#ff4d8d", "#4c1d95"),
+          elo: 1200,
+          tags: {},
+          comments: [],
+          pool: "boys"
+        };
+      }
+      if (state.unvotedId) {
+        const idx = list.findIndex((x) => x.id === state.unvotedId);
+        if (idx !== -1 && stagePersonIndex === 0) return list[idx];
+      }
+      return list[stagePersonIndex % list.length];
+    }
+
+    function cycleSubjectPhoto() {
+      const list = allProfiles();
+      if (list.length > 1) {
+        stagePersonIndex = (stagePersonIndex + 1) % list.length;
+        state.unvotedId = null;
+        renderCreateStage();
+      }
+    }
+
+    function triggerComparePicker() {
+      const inp = /** @type {HTMLInputElement | null} */ (document.getElementById("stage-compare-file"));
+      if (inp) inp.click();
+    }
+
+    /** @param {string} label */
+    function pickPreset(label) {
+      stageMedia = {
+        label,
+        url: PRESET_IMAGES[label] || makeBadgeImage(label, "#7c5cff", "#0f172a"),
+        type: "image"
+      };
+      renderCreateStage();
+    }
+
+    /** @param {HTMLInputElement | null} input */
+    async function onStageMediaChosen(input) {
+      const f = input && input.files ? input.files[0] : undefined;
+      if (!f) return;
+      const isVid = f.type.startsWith("video/");
+      try {
+        const url = isVid ? await readMediaUrl(f) : await processPhotoFile(f);
+        stageMedia = {
+          label: f.name.replace(/\.[^.]+$/, "") || (isVid ? "Video" : "GFX"),
+          url,
+          type: isVid ? "video" : "image"
+        };
+        renderCreateStage();
+      } catch (_e) {
+        showToast("Media error");
+      }
+      if (input) input.value = "";
+    }
+
+    function renderCreateStage() {
+      const person = currentStagePerson();
+      const pImg = /** @type {HTMLImageElement | null} */ (document.getElementById("stage-person-img"));
+      const pName = document.getElementById("stage-person-name");
+      if (pImg) pImg.src = person.photo;
+      if (pName) pName.textContent = person.name;
+
+      const plusUi = document.getElementById("stage-plus-ui");
+      const cImg = /** @type {HTMLImageElement | null} */ (document.getElementById("stage-compare-img"));
+      const cVid = /** @type {HTMLVideoElement | null} */ (document.getElementById("stage-compare-video"));
+      const cLbl = document.getElementById("stage-compare-label");
+
+      if (stageMedia.type === "video" && stageMedia.url) {
+        plusUi?.classList.add("hidden");
+        cImg?.classList.add("hidden");
+        if (cVid) {
+          cVid.src = stageMedia.url;
+          cVid.classList.remove("hidden");
+        }
+        if (cLbl) cLbl.textContent = stageMedia.label;
+      } else if (stageMedia.type === "image" && stageMedia.url) {
+        plusUi?.classList.add("hidden");
+        cVid?.classList.add("hidden");
+        if (cImg) {
+          cImg.src = stageMedia.url;
+          cImg.classList.remove("hidden");
+        }
+        if (cLbl) cLbl.textContent = stageMedia.label;
+      } else {
+        plusUi?.classList.remove("hidden");
+        cImg?.classList.add("hidden");
+        cVid?.classList.add("hidden");
+        if (cLbl) cLbl.textContent = tr(state.lang, "addPoster");
+      }
+
+      renderFeed();
+    }
+
+    function postSimpleSmash() {
+      const person = currentStagePerson();
+      const cmtInp = /** @type {HTMLInputElement | null} */ (document.getElementById("stage-comment-input"));
+      const comment = (cmtInp && cmtInp.value.trim()) || "Smash!";
+      const mediaUrl = stageMedia.url && stageMedia.url.startsWith("blob:") ? "" : stageMedia.url;
+      const mediaType = mediaUrl ? stageMedia.type : "none";
+      const mediaLabel = stageMedia.label || "🦁 Lion";
+
+      /** @type {SmashPostItem} */
+      const newPost = {
+        id: "post_" + Date.now(),
+        autoUser: generateAutoUsername(),
+        personName: person.name,
+        personPhoto: person.photo,
+        mediaLabel,
+        mediaUrl,
+        mediaType,
+        comment,
+        replies: []
+      };
+
+      state.posts.unshift(newPost);
+      if (state.posts.length > 20) state.posts.pop();
+      if (cmtInp) cmtInp.value = "";
+      stageMedia = { label: "", url: "", type: "none" };
+      saveState();
+      renderCreateStage();
+      showToast(`Posted by ${newPost.autoUser}`);
+    }
+
+    /** @param {string} postId @param {Event} ev */
+    function addFeedReply(postId, ev) {
+      ev.preventDefault();
+      const inp = /** @type {HTMLInputElement | null} */ (document.getElementById(`reply-${postId}`));
+      const text = inp ? inp.value.trim() : "";
+      if (!text) return;
+      const post = state.posts.find((p) => p.id === postId);
+      if (!post) return;
+      post.replies.unshift({ user: generateAutoUsername(), text });
+      if (inp) inp.value = "";
+      saveState();
+      renderFeed();
+    }
+
+    /** @param {AutoComment} rep @returns {string} */
+    function replyHtml(rep) {
+      return `<div class="cmt-line"><strong>${esc(rep.user)}:</strong> ${esc(rep.text)}</div>`;
+    }
+
+    /** @param {SmashPostItem} item @returns {string} */
+    function postCardHtml(item) {
+      const rightVisual =
+        item.mediaType === "video" && item.mediaUrl
+          ? `<video src="${esc(item.mediaUrl)}" autoplay loop muted playsinline></video>`
+          : `<img src="${esc(item.mediaUrl || PRESET_IMAGES["🦁 Lion"])}" alt="${esc(item.mediaLabel)}" />`;
+
+      const repList = Array.isArray(item.replies) ? item.replies.slice(0, 3) : [];
+      /** @type {string[]} */
+      const repParts = [];
+      for (let i = 0; i < repList.length; i++) {
+        repParts.push(replyHtml(repList[i]));
+      }
+
+      return `
+        <article class="feed-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.74rem; color:var(--muted);">
+            <strong>${esc(item.autoUser)}</strong>
+            <span>${esc(item.personName)} VS ${esc(item.mediaLabel)}</span>
+          </div>
+          <div class="feed-pair">
+            <div><img src="${esc(item.personPhoto)}" alt="${esc(item.personName)}" /></div>
+            <div class="vs-circle">VS</div>
+            <div>${rightVisual}</div>
+          </div>
+          <div style="font-size:0.8rem;">${esc(item.comment)}</div>
+          <form class="mini-form" onsubmit="window.addFeedReply('${item.id}', event)">
+            <input type="text" id="reply-${item.id}" placeholder="${esc(tr(state.lang, "shortCommentPh"))}" />
+            <button type="submit" class="btn btn-primary btn-sm">${esc(tr(state.lang, "post"))}</button>
+          </form>
+          ${repParts.length ? `<div class="mini-comments">${repParts.join("")}</div>` : ""}
+        </article>
+      `;
+    }
+
+    function renderFeed() {
+      const listEl = document.getElementById("smash-feed-list");
+      if (!listEl) return;
+      /** @type {string[]} */
+      const htmlList = [];
+      for (let i = 0; i < state.posts.length; i++) {
+        htmlList.push(postCardHtml(state.posts[i]));
+      }
+      listEl.innerHTML = htmlList.join("");
+    }
+
+    /** @param {ProfileItem} p @returns {number} */
+    function roastCount(p) {
+      const tagsSum = Object.values(p.tags || {}).reduce((a, b) => a + b, 0);
+      return tagsSum + (Array.isArray(p.comments) ? p.comments.length * 2 : 0);
+    }
+
+    function renderLeader() {
+      const all = allProfiles();
+      const topEl = document.getElementById("top-rank-list");
+      const roastEl = document.getElementById("roast-rank-list");
+
+      const topSorted = [...all].sort((a, b) => b.elo - a.elo);
+      const roastSorted = [...all].sort((a, b) => roastCount(b) - roastCount(a));
+
+      if (topEl) {
+        topEl.innerHTML = topSorted
+          .map(
+            (p, idx) => `
+            <div class="rank-row">
+              <div class="rank-left">
+                <strong>#${idx + 1}</strong>
+                <img class="rank-avatar" src="${esc(p.photo)}" alt="" />
+                <span style="font-weight:700; font-size:0.84rem;">${esc(p.name)}</span>
+              </div>
+              <span class="score-pill">${p.elo}</span>
+            </div>
+          `
+          )
+          .join("");
+      }
+
+      if (roastEl) {
+        roastEl.innerHTML = roastSorted
+          .map(
+            (p, idx) => `
+            <div class="rank-row">
+              <div class="rank-left">
+                <strong>#${idx + 1}</strong>
+                <img class="rank-avatar" src="${esc(p.photo)}" alt="" />
+                <span style="font-weight:700; font-size:0.84rem;">${esc(p.name)}</span>
+              </div>
+              <span class="score-pill">${roastCount(p)} 🔥</span>
+            </div>
+          `
+          )
+          .join("");
+      }
+    }
+
+    const slotPickerEl = /** @type {HTMLInputElement | null} */ (document.getElementById("slot-file-picker"));
+    if (slotPickerEl) {
+      slotPickerEl.addEventListener("change", () => {
+        void onSlotFileChosen(slotPickerEl);
+      });
+    }
+
+    const stageCompareEl = /** @type {HTMLInputElement | null} */ (document.getElementById("stage-compare-file"));
+    if (stageCompareEl) {
+      stageCompareEl.addEventListener("change", () => {
+        void onStageMediaChosen(stageCompareEl);
+      });
+    }
+
+    Object.assign(window, {
+      setLang,
+      goTab,
+      hideHandBanner,
+      openCreateForUnvoted,
+      addNewSlot,
+      pickPhotoForSlot,
+      onSlotNameInput,
+      removeSlot,
+      saveSlot,
+      nextPair,
+      voteCard,
+      addTag,
+      addCardComment,
+      cycleSubjectPhoto,
+      triggerComparePicker,
+      pickPreset,
+      postSimpleSmash,
+      addFeedReply
+    });
+
+    loadSaved();
+    applyTexts();
+    updateHandBanner();
+    renderPool("boys");
+    renderPool("girls");
+  </script>
+</body>
+</html>
